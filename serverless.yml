@@ -41,16 +41,16 @@ custom:
   slack_install_redirect: https://slack.com
 
   # Verification token
-  slack_verification_token: "xxxxxxxxxxxxx"            
+  slack_verification_token: ${env.SLACK_VERIFICATION_TOKEN}
   
   # Space delimited scopes
   slack_client_scopes: "bot commands incoming-webhook"
   
   # Client ID - quotes required
-  slack_client_id: "xxxxxxxxxx.xxxxxxxxxxxx"
+  slack_client_id: ${env.SLACK_CLIENT_ID}
   
   # Client Secret - quotes required
-  slack_client_secret: "xxxxxxxxxxxxxxxxxx"
+  slack_client_secret: ${env.SLACK_CLIENT_SECRET}
   
 
 provider:

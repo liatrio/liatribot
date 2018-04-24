@@ -6,6 +6,13 @@ pipeline {
       args '-u 0:0'
     }
   }
+  environment {
+    SLACK_VERIFICATION_TOKEN = credentials('liatribot-slack-verification-token')
+    SLACK_CLIENT_ID = credentials('liatribot-slack-client-id')
+    SLACK_CLIENT_SECRET = credentials('liatribot-slack-client-secret')
+    AWS_ACCESS_KEY_ID = credentials('shanem-aws-secret-key-id')
+    AWS_SECRET_ACCESS_KEY = credentials('shanem-aws-secret-access-key')
+  }
   stages {
     stage('Build') {
       steps {
@@ -20,7 +27,13 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        echo "deploy"
+        sh 'serverless deploy'
+      }
+    }
+    stage('Destroy) {
+      steps {
+        echo "not destroying"
+        //serverless remove
       }
     }
   }
