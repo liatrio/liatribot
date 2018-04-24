@@ -7,6 +7,7 @@ pipeline {
     }
   }
   environment {
+    // https://jenkins.io/doc/book/pipeline/jenkinsfile/#handling-credentials
     SLACK_VERIFICATION_TOKEN = credentials('liatribot-slack-verification-token')
     SLACK_CLIENT_ID = credentials('liatribot-slack-client-id')
     SLACK_CLIENT_SECRET = credentials('liatribot-slack-client-secret')

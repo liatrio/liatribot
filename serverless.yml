@@ -41,6 +41,7 @@ custom:
   slack_install_redirect: https://slack.com
 
   # Verification token
+  # https://serverless.com/framework/docs/providers/openwhisk/guide/variables/
   slack_verification_token: ${env:SLACK_VERIFICATION_TOKEN}
   
   # Space delimited scopes
