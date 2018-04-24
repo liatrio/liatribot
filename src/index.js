@@ -25,7 +25,7 @@ slack.on('/greet', (msg, bot) => {
   };
 
   // ephemeral reply
-  bot.replyPrivate(message); 
+  bot.reply(message); 
 });
 
 
