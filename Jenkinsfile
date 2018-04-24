@@ -30,7 +30,7 @@ pipeline {
         sh 'serverless deploy'
       }
     }
-    stage('Destroy) {
+    stage('Destroy') {
       steps {
         echo "not destroying"
         //serverless remove
