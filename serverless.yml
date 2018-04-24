@@ -56,7 +56,6 @@ custom:
 provider:
   name: aws
   runtime: nodejs4.3
-  profile: serverless
   iamRoleStatements:
     - Effect: Allow
       Action:
