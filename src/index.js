@@ -82,12 +82,18 @@ slack.on('/beerjar', (msg, bot) => {
 
     //let result = '';
 
-    slack.store.save('test1');
-    slack.store.save({id: 'test2', beerjar: 0});
-    slack.store.save({id: 'test3'});
-    slack.store.save({id: msg.text, beerjar: 0}).then(results => {
+    let itemToSave = {
+      "User": {
+        S: "exampleUser"
+      },
+      "Beerjar": {
+        N: "4"
+      }
+    };
+    slack.store.save(itemToSave);
+    /*slack.store.save({id: msg.text, beerjar: 0}).then(results => {
       bot.reply(JSON.stringify(results, null, 4));
-    });
+    });*/
     /*slack.store.get(msg.text).then(record => {
       result = JSON.stringify(record, null, 4);
     }).catch(error => {
