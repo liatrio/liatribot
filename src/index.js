@@ -73,7 +73,7 @@ slack.on('/beerjar', (msg, bot) => {
   
   if (msg.text === '') {
     bot.reply({text:'no target specified -> BEERJAR HELP'});
-  } else if (msg.text.includes(' ')) {
+  } else if (msg.text.includes(' ') || msg.text.includes('\n')) {
     // there was a space so there must be more than one arg
     bot.reply({text:'too many targets -> BEERJAR HELP'});
   } else {
