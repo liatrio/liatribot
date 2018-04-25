@@ -57,7 +57,7 @@ slack.on('reaction_added', (msg, bot) => {
 });
 
 slack.on('/beerjar', (msg, bot) => {
-/*  let message = {
+  let message = {
     text: `${JSON.stringify(msg, null, 4)}`,
     attachments: [{
       fallback: 'actions',
@@ -69,11 +69,17 @@ slack.on('/beerjar', (msg, bot) => {
         { type: "button", name: "Hiya", text: "Hiya", value: "Hiya" }
       ]
     }]
-  };*/
-  let message = { text: 'thanks!' };
-
-  // ephemeral reply
-  bot.reply(message); 
+  };
+  
+  if (msg.text === '') {
+    bot.reply({text:'no target specified -> BEERJAR HELP'});
+  } else if (msg.text.includes(' ')) {
+    // there was a space so there must be more than one arg
+    bot.reply({text:'too many targets -> BEERJAR HELP'});
+  } else {
+    let message = { text: 'thanks!' };
+    bot.reply(message); 
+  }
 });
 
 
