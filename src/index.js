@@ -79,9 +79,20 @@ slack.on('/beerjar', (msg, bot) => {
   } else {
     // If the first character is @, slice it off
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
+
+    let result = '';
+
+    slack.store.get(msg.text).then(record => {
+      if !(record.id) {
+        result = 'failed to get item, creating new record...
+        slack.store.save({id: msg.text, beerjar: 0});
+      } else {
+        result = JSON.stringiy(record, null, 4);
+      }
+    });
     //let message = { text: `beerjar ${msg.text}!` };
-    let result = JSON.stringify(slack.store.get(msg.text));
-    let message = { text: `get: ${result}`};
+    //let result = JSON.stringify(slack.store.get(msg.text), null, 4);
+    let message = { text: `result: ${result}`};
     bot.reply(message); 
   }
 });
