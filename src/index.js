@@ -80,7 +80,7 @@ slack.on('/beerjar', (msg, bot) => {
     // If the first character is @, slice it off
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
     //let message = { text: `beerjar ${msg.text}!` };
-    let result = slack.store.get(msg.text);
+    let result = JSON.stringify(slack.store.get(msg.text));
     let message = { text: `get: ${result}`};
     bot.reply(message); 
   }
