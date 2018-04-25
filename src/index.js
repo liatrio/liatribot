@@ -12,6 +12,8 @@
 // Include the serverless-slack bot framework
 const slack = require('serverless-slack');
 
+const db = require('./db');
+
 // The function that AWS Lambda will call
 exports.handler = slack.handler.bind(slack);
 
@@ -90,7 +92,8 @@ slack.on('/beerjar', (msg, bot) => {
         N: "4"
       }
     };
-    bot.reply(JSON.stringify(slack.store.save(itemToSave)));
+    bot.reply(JSON.stringify(db.put(itemToSave)));
+    //bot.reply(JSON.stringify(slack.store.save(itemToSave)));
     /*slack.store.save({id: msg.text, beerjar: 0}).then(results => {
       bot.reply(JSON.stringify(results, null, 4));
     });*/

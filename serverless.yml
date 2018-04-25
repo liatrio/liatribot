@@ -29,6 +29,7 @@ custom:
   slack_enable_logging: true
 
   # The dynamodb table to store OAuth access data
+  # don't change this it's hardcoded in custom aws module
   slack_table_name: Teams
 
   # The path used to post Slack events to
