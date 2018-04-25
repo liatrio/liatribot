@@ -83,12 +83,10 @@ slack.on('/beerjar', (msg, bot) => {
     let result = '';
 
     slack.store.get(msg.text).then(record => {
-      if (record.id === '') {
-        result = 'failed to get item, creating new record..';
-        slack.store.save({id: msg.text, beerjar: 0});
-      } else {
-        result = JSON.stringiy(record, null, 4);
-      }
+      result = JSON.stringify(record, null, 4);
+    }).catch(error => {
+      result = error;
+      slack.store.save({id: msg.text, beerjar: 0});
     });
     //let message = { text: `beerjar ${msg.text}!` };
     //let result = JSON.stringify(slack.store.get(msg.text), null, 4);
