@@ -6,6 +6,9 @@
  *
 */
 
+// Leave this in for block-scoped declaration support
+'use strict';
+
 // Include the serverless-slack bot framework
 const slack = require('serverless-slack');
 
