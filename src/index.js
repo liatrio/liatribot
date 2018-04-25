@@ -58,7 +58,7 @@ slack.on('reaction_added', (msg, bot) => {
 
 slack.on('/beerjar', (msg, bot) => {
   let message = {
-    text: `${msg}`,
+    text: `${JSON.stringify(msg, null, 4)}`,
     attachments: [{
       fallback: 'actions',
       callback_id: "reaction_added",
