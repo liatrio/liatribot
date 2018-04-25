@@ -84,7 +84,7 @@ slack.on('/beerjar', (msg, bot) => {
 
     slack.store.get(msg.text).then(record => {
       if !(record.id) {
-        result = 'failed to get item, creating new record...
+        result = 'failed to get item, creating new record..';
         slack.store.save({id: msg.text, beerjar: 0});
       } else {
         result = JSON.stringiy(record, null, 4);
