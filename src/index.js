@@ -57,7 +57,7 @@ slack.on('reaction_added', (msg, bot) => {
 });
 
 slack.on('/beerjar', (msg, bot) => {
-  let message = {
+/*  let message = {
     text: `${JSON.stringify(msg, null, 4)}`,
     attachments: [{
       fallback: 'actions',
@@ -69,7 +69,8 @@ slack.on('/beerjar', (msg, bot) => {
         { type: "button", name: "Hiya", text: "Hiya", value: "Hiya" }
       ]
     }]
-  };
+  };*/
+  let message = { test: 'thanks!' };
 
   // ephemeral reply
   bot.reply(message); 
