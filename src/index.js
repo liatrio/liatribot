@@ -82,6 +82,9 @@ slack.on('/beerjar', (msg, bot) => {
 
     //let result = '';
 
+    slack.store.save('test1');
+    slack.store.save({id: 'test2', beerjar: 0});
+    slack.store.save({id: 'test3'});
     slack.store.save({id: msg.text, beerjar: 0}).then(results => {
       bot.reply(JSON.stringify(results, null, 4));
     });
