@@ -70,7 +70,7 @@ slack.on('/beerjar', (msg, bot) => {
       ]
     }]
   };*/
-  let message = { test: 'thanks!' };
+  let message = { text: 'thanks!' };
 
   // ephemeral reply
   bot.reply(message); 
