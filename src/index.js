@@ -77,7 +77,9 @@ slack.on('/beerjar', (msg, bot) => {
     // there was a space so there must be more than one arg
     bot.reply({text:'too many targets -> BEERJAR HELP'});
   } else {
-    let message = { text: 'thanks!' };
+    // If the first character is @, slice it off
+    msg.text[0] === '@' ? msg.text.slice(1) : msg.text;
+    let message = { text: `beerjar ${msg.text}!` };
     bot.reply(message); 
   }
 });
