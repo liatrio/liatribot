@@ -71,7 +71,16 @@ slack.on('/beerjar', (msg, bot) => {
     if (msg.text === 'list') {
       let attributes = [ 'id', 'beerjar' ];
       db.scan(attributes).then( (res) => {
-        bot.reply({text: JSON.stringify(res, null, 2)});
+        // Sort by Beerjar totals in descending order
+        // https://www.w3schools.com/jsref/jsref_sort.asp
+        res.Items.sort( (a, b) => b.beerjar - a.beerjar );
+        let text = "";
+        res.Items.forEach( (value, index) => {
+          index += 1
+          text += `(${index})\t${value.id}\t$${value.beerjar}\n`
+        });
+        bot.reply({text});
+        //bot.reply({text: JSON.stringify(res, null, 2)});
       }).catch( (err) => {
         console.log('err:' + err);
       });
