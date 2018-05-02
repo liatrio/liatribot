@@ -57,6 +57,7 @@ slack.on('reaction_added', (msg, bot) => {
 });
 
 slack.on('/beerjar', (msg, bot) => {
+  console.log('beerjar command');
   let message = {
     text: `${JSON.stringify(msg, null, 4)}`,
     attachments: [{
@@ -70,13 +71,14 @@ slack.on('/beerjar', (msg, bot) => {
       ]
     }]
   };
-  
+
   if (msg.text === '') {
     bot.reply({text:'no target specified -> BEERJAR HELP'});
   } else if (msg.text.includes(' ') || msg.text.includes('\n')) {
     // there was a space so there must be more than one arg
     bot.reply({text:'too many targets -> BEERJAR HELP'});
   } else {
+    console.log('ABCDEFG');
     // If the first character is @, slice it off
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
@@ -86,6 +88,15 @@ slack.on('/beerjar', (msg, bot) => {
       HashKey: 'beerjarTest',
       NumAttribute: 1
     }
+    console.log('saving...');
+    slack.store.save(itemToSave)
+      .then( (res) => {
+        console.log('res:' + res);
+      })
+      .catch( (err) => {
+        console.log('err:' + err);
+      });
+      
     bot.reply(JSON.stringify(slack.store.save(itemToSave)));
     /*slack.store.save({id: msg.text, beerjar: 0}).then(results => {
       bot.reply(JSON.stringify(results, null, 4));
