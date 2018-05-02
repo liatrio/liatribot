@@ -85,6 +85,7 @@ slack.on('/beerjar', (msg, bot) => {
     //let result = '';
 
     let itemToSave = {
+      id: 'beerjarTest',
       HashKey: 'beerjarTest',
       NumAttribute: 1
     }
