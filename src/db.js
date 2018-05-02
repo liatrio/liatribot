@@ -29,7 +29,7 @@ let scan = (attributes) => {
   });
 }
 
-let get = (id) => {
+let getItem = (id) => {
   let params = {
     TableName: process.env.TABLE_NAME,
     Key: {
@@ -46,6 +46,6 @@ let get = (id) => {
 module.exports = {
   save,
   scan,
-  get
+  getItem
 };
 

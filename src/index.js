@@ -88,7 +88,7 @@ slack.on('/beerjar', (msg, bot) => {
 			bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
 		} else {
 
-      db.get(msg.text).then( (res) => {
+      db.getItem(msg.text).then( (res) => {
 				console.log('res:' + res);
       }).catch( (err) => {
 				console.log('err:' + err);
