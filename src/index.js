@@ -4,7 +4,7 @@
  *
  * 04.24.2018
  *
-*/
+ */
 
 // Leave this in for block-scoped declaration support
 'use strict';
@@ -76,8 +76,8 @@ slack.on('/beerjar', (msg, bot) => {
         res.Items.sort( (a, b) => b.beerjar - a.beerjar );
         let text = "Beerjar Totals\n";
         res.Items.forEach( (value, index) => {
-          index += 1
-          text += `(${index})\t$${value.beerjar}\t${value.id}\n`
+          index += 1;
+          text += `(${index})\t$${value.beerjar}\t${value.id}\n`;
         });
         bot.reply({text});
         //bot.reply({text: JSON.stringify(res, null, 2)});
@@ -92,28 +92,28 @@ slack.on('/beerjar', (msg, bot) => {
       /*
        *
        *
-      */
+       */
 
       bot.replyPrivate({text: 'getting current value'});
-
-
       db.get(msg.text).then( (res) => {
-        bot.replyPrivate({text: JSON.stringify(res, null, 2)});
+        bot.replyPrivate({text: `${JSON.stringify(res, null, 2)}});
       }).catch( (err) => {
-        bot.replyPrivate({text: JSON.stringify(err, null, 2)});
+        bot.replyPrivate({text: `${JSON.stringify(err, null, 2)}});
       });
 
+      /*
       let data = {
         id: `${msg.text}`,
         beerjar: 1
-      }
+      };
+
       db.save(data).then( (res) => {
         bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
         console.log('res:' + res);
       }).catch( (err) => {
         bot.replyPrivate({text: `${msg.text} doesn't have a beerjar. \`/beerjar help\``});
         console.log('err:' + err);
-      });
+      });*/
     }
   }
 });
@@ -125,9 +125,9 @@ slack.on('/adduser', (msg, bot) => {
   } else if (msg.text.includes(' ') || msg.text.includes('\n')) {
     // there was a space so there must be more than one arg
     bot.replyPrivate({text:'Please specify just one argument. \`/adduser help\`'});
-    } else if (msg.text === 'help') {
-      bot.replyPrivate({text: `\`/adduser <name>\`\t\t\tAdd a user to Liatribot\n\`/adduser help\`\t\t\t\tDisplay this help message`});
-    } else {
+  } else if (msg.text === 'help') {
+    bot.replyPrivate({text: `\`/adduser <name>\`\t\t\tAdd a user to Liatribot\n\`/adduser help\`\t\t\t\tDisplay this help message`});
+  } else {
     // If the first character is @, slice it off
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
@@ -135,13 +135,13 @@ slack.on('/adduser', (msg, bot) => {
     /*
      *
      *
-    */
+     */
 
     // Create the information for the new user
     let data = {
       id: `${msg.text}`,
       beerjar: 0
-    }
+    };
 
     // Save the new user
     db.save(data).then( (res) => {
