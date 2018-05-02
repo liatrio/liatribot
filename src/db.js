@@ -14,7 +14,7 @@ let save = (data) => {
       err ? reject(err) : resolve(data);
     });
   });
-};
+}
 
 // attributes: array of attributes as strings
 let scan = (attributes) => {
@@ -27,35 +27,10 @@ let scan = (attributes) => {
       err ? reject(err) : resolve(data);
     });
   });
-};
-
-let get = (user) => {
-  let params = {
-    TableName: process.env.TABLE_NAME,
-    Key: { id: user }
-  };
-  return new Promise((resolve, reject) => {
-    dynamo.get(params, (err, data) => {
-      err ? reject(err) : resolve(data);
-    });
-  });
-};
-
-let remove = (user) => {
-  let params = {
-    TableName: process.env.TABLE_NAME,
-    Key: { id: user }
-  };
-  return new Promise((resolve, reject) => {
-    dynamo.delete(params, (err, data) => {
-      err ? reject(err) : resolve(data);
-    });
-  });
-};
+}
 
 module.exports = {
   save,
-  scan,
-  get,
-  remove
-};
+  scan
+};;
+
