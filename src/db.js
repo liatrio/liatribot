@@ -33,7 +33,7 @@ let get = (id) => {
   let params = {
     TableName: process.env.TABLE_NAME,
     Key: {
-      id
+      'id': id
     }
   };
   return new Promise((resolve, reject) => {
