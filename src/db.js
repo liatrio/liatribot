@@ -29,8 +29,22 @@ let scan = (attributes) => {
   });
 }
 
+let get = (id) => {
+  let params = {
+    TableName: process.env.TABLE_NAME,
+    Key: {
+      id
+    }
+  };
+  return new Promise((resolve, reject) => {
+    dynamo.get(params, (err, data) => {
+      err ? reject(err) : resolve(data);
+    });
+  });
+}
+
 module.exports = {
   save,
   scan
-};;
+};
 

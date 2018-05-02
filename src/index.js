@@ -88,11 +88,8 @@ slack.on('/beerjar', (msg, bot) => {
 			bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
 		} else {
 
-			// Get current beerjar value
-			/*
-			 *
-			 *
-			 */
+      let currentBeerjar = db.get(msg.text);
+      bot.reply(JSON.stringify(currentBeerjar, null, 2));
 
 			let data = {
 				id: `${msg.text}`,
