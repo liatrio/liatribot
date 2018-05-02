@@ -82,7 +82,7 @@ slack.on('/beerjar', (msg, bot) => {
         bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
         console.log('res:' + res);
       }).catch( (err) => {
-        bot.reply({text: `${msg.text} doesn't have a beerjar. \`/beerjar help\``);
+        bot.reply({text: `${msg.text} doesn't have a beerjar. \`/beerjar help\``});
         console.log('err:' + err);
       });
     }
