@@ -74,25 +74,30 @@ slack.on('/beerjar', (msg, bot) => {
         // Sort by Beerjar totals in descending order
         // https://www.w3schools.com/jsref/jsref_sort.asp
         res.Items.sort( (a, b) => b.beerjar - a.beerjar );
-        let text = "";
+        let text = "Beerjar Totals\n";
         res.Items.forEach( (value, index) => {
           index += 1
-          text += `(${index})\t${value.id}\t$${value.beerjar}\n`
+          text += `(${index})\t${value.beerjar}\t$${value.id}\n`
         });
         bot.reply({text});
         //bot.reply({text: JSON.stringify(res, null, 2)});
       }).catch( (err) => {
         console.log('err:' + err);
       });
-      bot.reply({text: "listing all beerjars..."});
     } else if (msg.text === 'help') {
       bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
     } else {
+
+      // Get current beerjar value
+      /*
+       *
+       *
+      */
+
       let data = {
         id: `${msg.text}`,
         beerjar: 1
       }
-      console.log('saving...');
       db.save(data).then( (res) => {
         bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
         console.log('res:' + res);
@@ -101,6 +106,38 @@ slack.on('/beerjar', (msg, bot) => {
         console.log('err:' + err);
       });
     }
+  }
+});
+
+slack.on('/adduser', (msg, bot) => {
+  if (msg.text === '') {
+    // no msg text, need a subcommand
+    bot.replyPrivate({text:'Please specify an argument. \`/adduser help\`'});
+  } else if (msg.text.includes(' ') || msg.text.includes('\n')) {
+    // there was a space so there must be more than one arg
+    bot.replyPrivate({text:'Please specify just one argument. \`/adduser help\`'});
+  } else {
+    // If the first character is @, slice it off
+    msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
+
+    // check if user already exists... don't create if so
+    /*
+     *
+     *
+    */
+
+    // Create the information for the new user
+    let data = {
+      id: `${msg.text}`,
+      beerjar: 0
+    }
+
+    // Save the new user
+    db.save(data).then( (res) => {
+      bot.reply({text: `${msg.text} is now able to participate in Liatribot features.`});
+    }).catch( (err) => {
+      console.log('err:' + err);
+    });
   }
 });
 
