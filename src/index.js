@@ -96,9 +96,11 @@ slack.on('/beerjar', (msg, bot) => {
 
       bot.replyPrivate({text: 'getting current value'});
       db.get(msg.text).then( (res) => {
-        bot.replyPrivate({text: `${JSON.stringify(res, null, 2)}`});
+        console.log(res);
+        console.log(JSON.stringify(res, null, 4));
       }).catch( (err) => {
-        bot.replyPrivate({text: `${JSON.stringify(err, null, 2)}`});
+        console.log(err);
+        console.log(JSON.stringify(err, null, 4));
       });
 
       /*
