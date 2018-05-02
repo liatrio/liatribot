@@ -77,7 +77,7 @@ slack.on('/beerjar', (msg, bot) => {
         let text = "Beerjar Totals\n";
         res.Items.forEach( (value, index) => {
           index += 1
-          text += `(${index})\t${value.beerjar}\t$${value.id}\n`
+          text += `(${index})\t$${value.beerjar}\t${value.id}\n`
         });
         bot.reply({text});
         //bot.reply({text: JSON.stringify(res, null, 2)});
@@ -116,7 +116,9 @@ slack.on('/adduser', (msg, bot) => {
   } else if (msg.text.includes(' ') || msg.text.includes('\n')) {
     // there was a space so there must be more than one arg
     bot.replyPrivate({text:'Please specify just one argument. \`/adduser help\`'});
-  } else {
+    } else if (msg.text === 'help') {
+      bot.replyPrivate({text: `\`/adduser <name>\`\t\t\tAdd a user to Liatribot\n\`/adduser help\`\t\t\t\tDisplay this help message`});
+    } else {
     // If the first character is @, slice it off
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
@@ -134,7 +136,7 @@ slack.on('/adduser', (msg, bot) => {
 
     // Save the new user
     db.save(data).then( (res) => {
-      bot.reply({text: `${msg.text} is now able to participate in Liatribot features.`});
+      bot.replyPrivate({text: `${msg.text} is now able to participate in Liatribot features.`});
     }).catch( (err) => {
       console.log('err:' + err);
     });
