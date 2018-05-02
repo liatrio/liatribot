@@ -69,7 +69,7 @@ slack.on('/beerjar', (msg, bot) => {
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
     if (msg.text === 'list') {
-      let attributes = [ 'beerjar' ];
+      let attributes = [ 'id', 'beerjar' ];
       db.scan(attributes).then( (res) => {
         bot.reply({text: JSON.stringify(res, null, 2)});
       }).catch( (err) => {
