@@ -11,6 +11,7 @@
 
 // Include the serverless-slack bot framework
 const slack = require('serverless-slack');
+const db = require('./db');
 
 // The function that AWS Lambda will call
 exports.handler = slack.handler.bind(slack);
@@ -57,7 +58,6 @@ slack.on('reaction_added', (msg, bot) => {
 });
 
 slack.on('/beerjar', (msg, bot) => {
-  console.log('beerjar command');
   let message = {
     text: `${JSON.stringify(msg, null, 4)}`,
     attachments: [{
@@ -78,7 +78,6 @@ slack.on('/beerjar', (msg, bot) => {
     // there was a space so there must be more than one arg
     bot.reply({text:'too many targets -> BEERJAR HELP'});
   } else {
-    console.log('ABCDEFG');
     // If the first character is @, slice it off
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
@@ -90,7 +89,8 @@ slack.on('/beerjar', (msg, bot) => {
       NumAttribute: 1
     }
     console.log('saving...');
-    slack.store.save(itemToSave)
+    //slack.store.save(itemToSave)
+    db.save(itemToSave)
       .then( (res) => {
         console.log('res:' + res);
       })
