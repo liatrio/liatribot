@@ -60,10 +60,10 @@ slack.on('reaction_added', (msg, bot) => {
 slack.on('/beerjar', (msg, bot) => {
   if (msg.text === '') {
     // no msg text, need a subcommand
-    bot.reply({text:'Please specify an argument. \`/beerjar help\`'});
+    bot.replyPrivate({text:'Please specify an argument. \`/beerjar help\`'});
   } else if (msg.text.includes(' ') || msg.text.includes('\n')) {
     // there was a space so there must be more than one arg
-    bot.reply({text:'Please specify just one argument. \`/beerjar help\`'});
+    bot.replyPrivate({text:'Please specify just one argument. \`/beerjar help\`'});
   } else {
     // If the first character is @, slice it off
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
@@ -71,7 +71,7 @@ slack.on('/beerjar', (msg, bot) => {
     if (msg.text === 'list') {
       bot.reply({text: "listing all beerjars..."});
     } else if (msg.text === 'help') {
-      bot.reply({text: `\`/beerjar <name>\`:\tAdd $1 to a beerjar\n\`/beerjar list\`:\tList all beerjar totals\n\`/beerjar create <name>\`:\tCreate a beerjar\n\`/beerjar remove <name>\`:\t Remove a beerjar\n\`/beerjar help\`:\tDisplay this help message`});
+      bot.replyPrivate({text: `\`/beerjar <name>\`:\t\tAdd $1 to a beerjar\n\`/beerjar list\`:\t\tList all beerjar totals\n\`/beerjar create <name>\`:\tCreate a beerjar\n\`/beerjar remove <name>\`:\t Remove a beerjar\n\`/beerjar help\`:\t\tDisplay this help message`});
     } else {
       let itemToSave = {
         id: `${msg.text}`,
@@ -82,7 +82,7 @@ slack.on('/beerjar', (msg, bot) => {
         bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
         console.log('res:' + res);
       }).catch( (err) => {
-        bot.reply({text: `${msg.text} doesn't have a beerjar. \`/beerjar help\``});
+        bot.replyPrivate({text: `${msg.text} doesn't have a beerjar. \`/beerjar help\``});
         console.log('err:' + err);
       });
     }
