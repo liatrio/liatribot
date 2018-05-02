@@ -45,6 +45,7 @@ let get = (id) => {
 
 module.exports = {
   save,
-  scan
+  scan,
+  get
 };
 
