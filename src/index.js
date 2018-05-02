@@ -74,7 +74,7 @@ slack.on('/beerjar', (msg, bot) => {
 				// Sort by Beerjar totals in descending order
 				// https://www.w3schools.com/jsref/jsref_sort.asp
 				res.Items.sort( (a, b) => b.beerjar - a.beerjar );
-				let text = "Beerjar Totals\n";
+				let text = ":beers: Beerjar Totals :beers:\n";
 				res.Items.forEach( (value, index) => {
 					index += 1
 					text += `(${index})\t$${value.beerjar}\t${value.id}\n`
@@ -88,7 +88,6 @@ slack.on('/beerjar', (msg, bot) => {
 			bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
 		} else {
       db.getItem(msg.text).then( (res) => {
-        bot.replyPrivate({text: JSON.stringify(res, undefined, 2)});
         if (Object.keys(res).length === 0) {
           bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
         } else {
@@ -98,7 +97,7 @@ slack.on('/beerjar', (msg, bot) => {
             beerjar: newTotal
           }
           db.save(data).then( (res) => {
-            bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
+            bot.reply({text: `:beer: $1 was added to ${msg.text}'s beerjar! :beer:`});
             console.log('res:' + res);
           }).catch( (err) => {
             console.log('err:' + err);
