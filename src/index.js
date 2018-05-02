@@ -87,25 +87,27 @@ slack.on('/beerjar', (msg, bot) => {
 		} else if (msg.text === 'help') {
 			bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
 		} else {
-
       db.getItem(msg.text).then( (res) => {
         bot.replyPrivate({text: JSON.stringify(res, undefined, 2)});
+        if (Object.keys(res).length === 0) {
+          bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
+        } else {
+          let newTotal = res.Item.beerjar + 1;
+          let data = {
+            id: msg.text,
+            beerjar: newTotal
+          }
+          db.save(data).then( (res) => {
+            bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
+            console.log('res:' + res);
+          }).catch( (err) => {
+            console.log('err:' + err);
+          });
+        }
       }).catch( (err) => {
-        bot.replyPrivate({text: JSON.stringify(err, undefined, 2)});
+        console.log('err:' + err);
       });
-
-			let data = {
-				id: `${msg.text}`,
-				beerjar: 1
-			}
-			db.save(data).then( (res) => {
-				bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
-				console.log('res:' + res);
-			}).catch( (err) => {
-				bot.replyPrivate({text: `${msg.text} doesn't have a beerjar. \`/beerjar help\``});
-				console.log('err:' + err);
-			});
-		}
+    }
 	}
 });
 
