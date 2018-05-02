@@ -71,7 +71,11 @@ slack.on('/beerjar', (msg, bot) => {
     if (msg.text === 'list') {
       bot.reply({text: "listing all beerjars..."});
     } else if (msg.text === 'help') {
-      bot.replyPrivate({text: `\`/beerjar <name>\`:\t\tAdd $1 to a beerjar\n\`/beerjar list\`:\t\tList all beerjar totals\n\`/beerjar create <name>\`:\tCreate a beerjar\n\`/beerjar remove <name>\`:\t Remove a beerjar\n\`/beerjar help\`:\t\tDisplay this help message`});
+      bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar create <name>\`\tCreate a beerjar\n\`/beerjar remove <name>\`\t Remove a beerjar\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
+    } else if (msg.text.startsWith('create')) {
+      bot.replyPrivate({text: "creating beerjar..."});
+    } else if (msg.text.startsWith('remove')) {
+      bot.replyPrivate({text: "removing beerjar..."});
     } else {
       let itemToSave = {
         id: `${msg.text}`,
