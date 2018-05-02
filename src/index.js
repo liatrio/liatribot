@@ -69,20 +69,22 @@ slack.on('/beerjar', (msg, bot) => {
     msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
     if (msg.text === 'list') {
+      let attributes = [ 'beerjar' ];
+      db.scan(attributes).then( (res) => {
+        bot.reply({text: JSON.stringify(res, null, 2)});
+      }).catch( (err) => {
+        console.log('err:' + err);
+      });
       bot.reply({text: "listing all beerjars..."});
     } else if (msg.text === 'help') {
-      bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar create <name>\`\tCreate a beerjar\n\`/beerjar remove <name>\`\t Remove a beerjar\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
-    } else if (msg.text.startsWith('create')) {
-      bot.replyPrivate({text: "creating beerjar..."});
-    } else if (msg.text.startsWith('remove')) {
-      bot.replyPrivate({text: "removing beerjar..."});
+      bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
     } else {
-      let itemToSave = {
+      let data = {
         id: `${msg.text}`,
         beerjar: 1
       }
       console.log('saving...');
-      db.save(itemToSave).then( (res) => {
+      db.save(data).then( (res) => {
         bot.reply({text: `$1 was added to ${msg.text}'s beerjar! :beer:`});
         console.log('res:' + res);
       }).catch( (err) => {
