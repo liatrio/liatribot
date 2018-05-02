@@ -89,9 +89,9 @@ slack.on('/beerjar', (msg, bot) => {
 		} else {
 
       db.getItem(msg.text).then( (res) => {
-				console.log('res:' + res);
+        bot.replyPrivate({text: JSON.stringify(res, undefined, 2)});
       }).catch( (err) => {
-				console.log('err:' + err);
+        bot.replyPrivate({text: JSON.stringify(err, undefined, 2)});
       });
 
 			let data = {
