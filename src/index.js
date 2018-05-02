@@ -84,33 +84,20 @@ slack.on('/beerjar', (msg, bot) => {
     //let result = '';
 
     let itemToSave = {
-      id: 'beerjarTest',
-      HashKey: 'beerjarTest',
-      NumAttribute: 1
+      id: `${msg.text}`,
+      beerjar: 1
     }
     console.log('saving...');
     //slack.store.save(itemToSave)
     db.save(itemToSave)
       .then( (res) => {
+        bot.reply(JSON.stringify(res));
         console.log('res:' + res);
       })
       .catch( (err) => {
+        bot.reply(JSON.stringify(err));
         console.log('err:' + err);
       });
-      
-    bot.reply(JSON.stringify(slack.store.save(itemToSave)));
-    /*slack.store.save({id: msg.text, beerjar: 0}).then(results => {
-      bot.reply(JSON.stringify(results, null, 4));
-    });*/
-    /*slack.store.get(msg.text).then(record => {
-      result = JSON.stringify(record, null, 4);
-    }).catch(error => {
-      result = error;
-    });*/
-    //let message = { text: `beerjar ${msg.text}!` };
-    //let result = JSON.stringify(slack.store.get(msg.text), null, 4);
-    //let message = { text: `result: ${result}`};
-    //bot.reply(message); 
   }
 });
 
