@@ -87,7 +87,6 @@ slack.on('/beerjar', (msg, bot) => {
 		} else if (msg.text === 'help') {
 			bot.replyPrivate({text: `\`/beerjar <name>\`\t\t\tAdd $1 to a beerjar\n\`/beerjar list\`\t\t\t\tList all beerjar totals\n\`/beerjar help\`\t\t\t\tDisplay this help message`});
 		} else {
-      bot.reply({text: JSON.stringify(msg)});
       db.getItem(msg.text).then( (res) => {
         if (Object.keys(res).length === 0) {
           bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
@@ -98,7 +97,7 @@ slack.on('/beerjar', (msg, bot) => {
             beerjar: newTotal
           }
           db.save(data).then( (res) => {
-            bot.reply({text: `:beer: $1 was added to ${msg.text}'s beerjar! :beer:`});
+            bot.reply({text: `:beer: $1 was added to ${msg.text}'s beerjar by ${msg.user_name}! :beer:`});
             console.log('res:' + res);
           }).catch( (err) => {
             console.log('err:' + err);
