@@ -98,7 +98,7 @@ slack.on('/beerjar', (msg, bot) => {
             beerjar: newTotal
           }
           db.save(data).then( (res) => {
-            bot.reply({text: `$1 was added to ${msg.text}'s beerjar by ${msg.user_name}! :beer:`});
+            bot.reply({text: `:beer: $1 was added to ${msg.text}'s beerjar by ${msg.user_name}! :beer:`});
             console.log('res:' + res);
           }).catch( (err) => {
             console.log('err:' + err);
