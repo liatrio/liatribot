@@ -77,7 +77,7 @@ slack.on('/beerjar', (msg, bot) => {
 				let text = ":beers: Beerjar Totals :beers:\n";
 				res.Items.forEach( (value, index) => {
 					index += 1
-					text += `(${index})\t$${value.beerjar}\t${value.id}\n`
+					text += `(${String(index).padStart(2,0)})\t$${value.beerjar}\t${value.id}\n`
 				});
 				bot.reply({text});
 				//bot.reply({text: JSON.stringify(res, null, 2)});
