@@ -77,7 +77,7 @@ slack.on('/beerjar', (msg, bot) => {
 				let text = ":beers: Beerjar Totals :beers:\n";
 				res.Items.forEach( (value, index) => {
 					index += 1
-					text += `(${String(index).padStart(2,0)})\t$${value.beerjar}\t${value.id}\n`
+					text += `(${index})\t$${value.beerjar}\t${value.id}\n`
 				});
 				bot.reply({text});
 				//bot.reply({text: JSON.stringify(res, null, 2)});
@@ -98,7 +98,7 @@ slack.on('/beerjar', (msg, bot) => {
             beerjar: newTotal
           }
           db.save(data).then( (res) => {
-            bot.reply({text: `:beer: $1 was added to ${msg.text}'s beerjar by ${msg.user_name}! :beer:`});
+            bot.reply({text: `$1 was added to ${msg.text}'s beerjar by ${msg.user_name}! :beer:`});
             console.log('res:' + res);
           }).catch( (err) => {
             console.log('err:' + err);
