@@ -99,48 +99,6 @@ slack.on('reaction_added', (msg, bot) => {
 	});
 });
 
-slack.on('/beergift', (msg, bot) => {
-	if (msg.text === '') {
-		// no msg text, need a subcommand
-		bot.replyPrivate({text:'Please specify an argument. \`/beergift help\`'});
-	} else if (msg.text.includes(' ') || msg.text.includes('\n')) {
-		// there was a space so there must be more than one arg
-		bot.replyPrivate({text:'Please specify just one argument. \`/beergift help\`'});
-	} else {
-		// If the first character is @, slice it off
-		msg.text = msg.text.toLowerCase();
-		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
-
-		if (msg.text === 'help') {
-			bot.replyPrivate({text: `\`/beergift <name>\`\t\t\tSubtract $1 from a beerjar\n\`/beergift help\`\t\t\t\tDisplay this help message`});
-		} else {
-      db.getItem(msg.text).then( (res) => {
-        if (Object.keys(res).length === 0) {
-          bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
-        } else {
-          let newTotal = res.Item.beerjar - 1;
-          if (newTotal < 0) {
-            newTotal = 0;
-          }
-          let data = {
-            id: msg.text,
-            beerjar: newTotal
-          }
-          db.save(data).then( (res) => {
-            bot.reply({text: `:beer: $1 was subtracted from ${msg.text}'s beerjar by ${msg.user_name}! :beer:`});
-            console.log('res:' + res);
-          }).catch( (err) => {
-            console.log('err:' + err);
-          });
-        }
-      }).catch( (err) => {
-        console.log('err:' + err);
-      });
-    }
-	}
-});
-
-
 slack.on('/beerjar', (msg, bot) => {
 	if (msg.text === '') {
 		// no msg text, need a subcommand
