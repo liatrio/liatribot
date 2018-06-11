@@ -35,10 +35,23 @@ slack.on('/gift', (msg, bot) => {
         if (Object.keys(res).length === 0) {
           bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
         } else {
-				  let newTotal = 1;
+					let message = {
+						text: `How much would you like to gift ${msg.text}?`,
+						attachments: [{
+							fallback: 'actions',
+							callback_id: "gift_click",
+							actions: [
+								{ type: "button", name: "1", text: ":moneybag:", value: "1" },
+								{ type: "button", name: "2", text: ":moneybag: :moneybag:", value: "2" },
+								{ type: "button", name: "3", text: ":moneybag: :moneybag: :moneybag:", value: "3" },
+							]
+						}]
+					};
+					let newTotal = Number(msg.actions[0].value);
+					let added = newTotal;
 					// account for users created before giftjar was added
 				  if (res.Item.giftjar) {
-            newTotal = res.Item.giftjar + 1;
+            newTotal += res.Item.giftjar;
 			  	}
           let data = {
             id: msg.text,
@@ -46,7 +59,7 @@ slack.on('/gift', (msg, bot) => {
 						beerjar: res.Item.beerjar // retain beerjar
           }
           db.save(data).then( (res) => {
-            bot.reply({text: `$1 was added to ${msg.text}'s giftjar by ${msg.user_name}!`});
+            bot.reply({text: `$${added} was added to ${msg.text}'s giftjar by ${msg.user_name}!`});
             console.log('res:' + res);
           }).catch( (err) => {
             console.log('err:' + err);
@@ -78,7 +91,6 @@ slack.on('/greet', (msg, bot) => {
 	// ephemeral reply
 	bot.reply(message); 
 });
-
 
 // Interactive Message handler
 slack.on('greetings_click', (msg, bot) => {
