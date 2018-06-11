@@ -29,29 +29,30 @@ slack.on('/gift', (msg, bot) => {
 		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
 		if (msg.text === 'help') {
-			bot.replyPrivate({text: `\`/gift <name>\`\t\t\tReward someone for being awesome\n\`/gift help\`\t\t\t\tDisplay this help message`});
+			bot.replyPrivate({text: `\`/gift <name>\`\t\t\tReward someone for being awesome\n\`/beerjar list\`\t\t\t\tList all giftjar totals\n\`/gift help\`\t\t\t\tDisplay this help message`});
+		} else if (msg.text === 'list') {
+			let attributes = [ 'id', 'giftjar' ];
+			db.scan(attributes).then( (res) => {
+				// Sort by Beerjar totals in descending order
+				// https://www.w3schools.com/jsref/jsref_sort.asp
+				res.Items.sort( (a, b) => b.giftjar - a.giftjar );
+				let text = "Giftjar Totals\n";
+				res.Items.slice(0, 10).forEach( (value, index) => {
+					index += 1
+					text += `(${index})\t$${value.giftjar}\t${value.id}\n`
+				});
+				bot.reply({text});
+				//bot.reply({text: JSON.stringify(res, null, 2)});
+			}).catch( (err) => {
+        bot.reply({err});
+				console.log('err:' + err);
+			});
 		} else {
       db.getItem(msg.text).then( (res) => {
         if (Object.keys(res).length === 0) {
           bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
         } else {
-					let message = {
-						text: `How much would you like to gift ${msg.text}?`,
-						attachments: [{
-							fallback: 'actions',
-			        callback_id: "gift_click",
-							actions: [
-								{ type: "button", name: "1", text: ":moneybag:",
-								  value: [ "1", msg.user_name, msg.text ] },
-								{ type: "button", name: "2", text: ":moneybag: :moneybag:", value: "2" },
-								{ type: "button", name: "3", text: ":moneybag: :moneybag: :moneybag:", value: "3" },
-							]
-						}]
-					};
-
-					bot.reply(message);
-
-					let newTotal = Number(message.actions[0].value);
+					let newTotal = 1;
 					let added = newTotal;
 					// account for users created before giftjar was added
 				  if (res.Item.giftjar) {
@@ -105,18 +106,6 @@ slack.on('greetings_click', (msg, bot) => {
 	// public reply
 	bot.reply(message);
 });
-
-// Interactive Message handler
-slack.on('gift_click', (msg, bot) => {
-	let message = { 
-		// selected button value
-		text: `$${msg.actions[0].value[0]} was added to ${msg.actions[0].value[2]}'s giftjar by ${msg.actions[0].value[1]}!`
-	};  
-
-	// public reply
-	bot.reply(message);
-});
-
 
 // Reaction Added event handler
 slack.on('reaction_added', (msg, bot) => {
