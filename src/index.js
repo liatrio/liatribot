@@ -42,7 +42,7 @@ slack.on('/gift', (msg, bot) => {
 			  	}
           let data = {
             id: msg.text,
-            giftjar: newTotal
+            giftjar: newTotal,
 						beerjar: res.Item.beerjar // retain beerjar
           }
           db.save(data).then( (res) => {
