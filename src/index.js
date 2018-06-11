@@ -35,7 +35,10 @@ slack.on('/gift', (msg, bot) => {
         if (Object.keys(res).length === 0) {
           bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
         } else {
-          let newTotal = res.Item.giftjar + 1;
+				  let newTotal = 1;
+				  if (res.Item.giftjar) {
+            newTotal = res.Item.giftjar + 1;
+			  	}
           let data = {
             id: msg.text,
             giftjar: newTotal
