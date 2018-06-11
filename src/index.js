@@ -39,6 +39,7 @@ slack.on('/gift', (msg, bot) => {
 						text: `How much would you like to gift ${msg.text}?`,
 						attachments: [{
 							fallback: 'actions',
+			        callback_id: "gift_click",
 							actions: [
 								{ type: "button", name: "1", text: ":moneybag:", value: "1" },
 								{ type: "button", name: "2", text: ":moneybag: :moneybag:", value: "2" },
@@ -61,7 +62,6 @@ slack.on('/gift', (msg, bot) => {
 						beerjar: res.Item.beerjar // retain beerjar
           }
           db.save(data).then( (res) => {
-            bot.reply({text: `$${added} was added to ${msg.text}'s giftjar by ${msg.user_name}!`});
             console.log('res:' + res);
           }).catch( (err) => {
             console.log('err:' + err);
@@ -99,6 +99,17 @@ slack.on('greetings_click', (msg, bot) => {
 	let message = { 
 		// selected button value
 		text: msg.actions[0].value 
+	};  
+
+	// public reply
+	bot.reply(message);
+});
+
+// Interactive Message handler
+slack.on('gift_click', (msg, bot) => {
+	let message = { 
+		// selected button value
+		text: `$${msg.actions[0].value} was added to ${msg.text}'s giftjar b    y ${msg.user_name}!`
 	};  
 
 	// public reply
