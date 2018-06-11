@@ -16,6 +16,43 @@ const db = require('./db');
 // The function that AWS Lambda will call
 exports.handler = slack.handler.bind(slack);
 
+slack.on('/gift', (msg, bot) => {
+	if (msg.text === '') {
+		// no msg text, need a subcommand
+		bot.replyPrivate({text:'Please specify an argument. \`/gift help\`'});
+	} else if (msg.text.includes(' ') || msg.text.includes('\n')) {
+		// there was a space so there must be more than one arg
+		bot.replyPrivate({text:'Please specify just one argument. \`/gift help\`'});
+	} else {
+		// If the first character is @, slice it off
+		msg.text = msg.text.toLowerCase();
+		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
+
+		if (msg.text === 'help') {
+			bot.replyPrivate({text: `\`/gift <name>\`\t\t\tReward someone for being awesome\n\`/gift help\`\t\t\t\tDisplay this help message`});
+		} else {
+      db.getItem(msg.text).then( (res) => {
+        if (Object.keys(res).length === 0) {
+          bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
+        } else {
+          let newTotal = res.Item.giftjar + 1;
+          let data = {
+            id: msg.text,
+            giftjar: newTotal
+          }
+          db.save(data).then( (res) => {
+            bot.reply({text: `$1 was added to ${msg.text}'s giftjar by ${msg.user_name}!`});
+            console.log('res:' + res);
+          }).catch( (err) => {
+            console.log('err:' + err);
+          });
+        }
+      }).catch( (err) => {
+        console.log('err:' + err);
+      });
+    }
+	}
+});
 
 // Slash Command handler
 slack.on('/greet', (msg, bot) => {
@@ -66,6 +103,7 @@ slack.on('/beergift', (msg, bot) => {
 		bot.replyPrivate({text:'Please specify just one argument. \`/beergift help\`'});
 	} else {
 		// If the first character is @, slice it off
+		msg.text = msg.text.toLowerCase();
 		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
 		if (msg.text === 'help') {
@@ -107,16 +145,18 @@ slack.on('/beerjar', (msg, bot) => {
 		bot.replyPrivate({text:'Please specify just one argument. \`/beerjar help\`'});
 	} else {
 		// If the first character is @, slice it off
+		msg.text = msg.text.toLowerCase();
 		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
-		if (msg.text === 'list') {
+    if (msg.text === 'balance') {
+		} else if (msg.text === 'list') {
 			let attributes = [ 'id', 'beerjar' ];
 			db.scan(attributes).then( (res) => {
 				// Sort by Beerjar totals in descending order
 				// https://www.w3schools.com/jsref/jsref_sort.asp
 				res.Items.sort( (a, b) => b.beerjar - a.beerjar );
 				let text = ":beers: Beerjar Totals :beers:\n";
-				res.Items.forEach( (value, index) => {
+				res.Items.slice(0, 10).forEach( (value, index) => {
 					index += 1
 					text += `(${index})\t$${value.beerjar}\t${value.id}\n`
 				});
@@ -163,6 +203,7 @@ slack.on('/adduser', (msg, bot) => {
 		bot.replyPrivate({text: `\`/adduser <name>\`\t\t\tAdd a user to Liatribot\n\`/adduser help\`\t\t\t\tDisplay this help message`});
 	} else {
 		// If the first character is @, slice it off
+		msg.text = msg.text.toLowerCase();
 		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
 		// check if user already exists... don't create if so
@@ -174,7 +215,8 @@ slack.on('/adduser', (msg, bot) => {
 		// Create the information for the new user
 		let data = {
 			id: `${msg.text}`,
-			beerjar: 0
+			beerjar: 0,
+			giftjar: 0
 		}
 
 		// Save the new user
