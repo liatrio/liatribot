@@ -64,6 +64,7 @@ slack.on('/gift', (msg, bot) => {
 						beerjar: res.Item.beerjar // retain beerjar
           }
           db.save(data).then( (res) => {
+            bot.reply({text: `$1 was added to ${msg.text}'s giftjar by ${msg.user_name}!`});
             console.log('res:' + res);
           }).catch( (err) => {
             console.log('err:' + err);
