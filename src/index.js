@@ -40,10 +40,9 @@ slack.on('/gift', (msg, bot) => {
 						attachments: [{
 							fallback: 'actions',
 			        callback_id: "gift_click",
-							gifter: msg.user_name,
-							giftee: msg.text,
 							actions: [
-								{ type: "button", name: "1", text: ":moneybag:", value: "1" },
+								{ type: "button", gifter: msg.user_name,
+								  giftee: msg.text, text: ":moneybag:", value: "1" },
 								{ type: "button", name: "2", text: ":moneybag: :moneybag:", value: "2" },
 								{ type: "button", name: "3", text: ":moneybag: :moneybag: :moneybag:", value: "3" },
 							]
@@ -52,7 +51,7 @@ slack.on('/gift', (msg, bot) => {
 
 					bot.reply(message);
 
-					let newTotal = Number(msg.actions[0].value);
+					let newTotal = Number(message.actions[0].value);
 					let added = newTotal;
 					// account for users created before giftjar was added
 				  if (res.Item.giftjar) {
@@ -111,7 +110,7 @@ slack.on('greetings_click', (msg, bot) => {
 slack.on('gift_click', (msg, bot) => {
 	let message = { 
 		// selected button value
-		text: `$${msg.actions[0].value} was added to ${msg.giftee}'s giftjar b    y ${msg.gifter}!`
+		text: `$${msg.actions[0].value} was added to ${msg.actions[0].giftee}'s giftjar by ${msg.actions[0].gifter}!`
 	};  
 
 	// public reply
