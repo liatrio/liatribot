@@ -39,7 +39,6 @@ slack.on('/gift', (msg, bot) => {
 						text: `How much would you like to gift ${msg.text}?`,
 						attachments: [{
 							fallback: 'actions',
-							callback_id: "gift_click",
 							actions: [
 								{ type: "button", name: "1", text: ":moneybag:", value: "1" },
 								{ type: "button", name: "2", text: ":moneybag: :moneybag:", value: "2" },
@@ -47,6 +46,9 @@ slack.on('/gift', (msg, bot) => {
 							]
 						}]
 					};
+
+					bot.replyPrivate(message);
+
 					let newTotal = Number(msg.actions[0].value);
 					let added = newTotal;
 					// account for users created before giftjar was added
