@@ -41,10 +41,12 @@ slack.on('/gift', (msg, bot) => {
 							fallback: 'actions',
 			        callback_id: "gift_click",
 							actions: [
-								{ type: "button", gifter: msg.user_name,
+								{ type: "button", name: "1", gifter: msg.user_name,
 								  giftee: msg.text, text: ":moneybag:", value: "1" },
-								{ type: "button", name: "2", text: ":moneybag: :moneybag:", value: "2" },
-								{ type: "button", name: "3", text: ":moneybag: :moneybag: :moneybag:", value: "3" },
+								{ type: "button", name: "2", gifter: msg.user_name,
+								  giftee: msg.text, text: ":moneybag: :moneybag:", value: "2" },
+								{ type: "button", name: "3", gifter: msg.user_name,
+								  giftee: msg.text, text: ":moneybag: :moneybag: :moneybag:", value: "3" },
 							]
 						}]
 					};
