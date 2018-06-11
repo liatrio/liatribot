@@ -36,12 +36,14 @@ slack.on('/gift', (msg, bot) => {
           bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
         } else {
 				  let newTotal = 1;
+					// account for users created before giftjar was added
 				  if (res.Item.giftjar) {
             newTotal = res.Item.giftjar + 1;
 			  	}
           let data = {
             id: msg.text,
             giftjar: newTotal
+						beerjar: res.Item.beerjar // retain beerjar
           }
           db.save(data).then( (res) => {
             bot.reply({text: `$1 was added to ${msg.text}'s giftjar by ${msg.user_name}!`});
