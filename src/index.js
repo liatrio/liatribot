@@ -29,7 +29,7 @@ slack.on('/gift', (msg, bot) => {
 		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
 
 		if (msg.text === 'help') {
-			bot.replyPrivate({text: `\`/gift <name>\`\t\t\tReward someone for being awesome\n\`/beerjar list\`\t\t\t\tList all giftjar totals\n\`/gift help\`\t\t\t\tDisplay this help message`});
+			bot.replyPrivate({text: `\`/gift <name>\`\t\t\tReward someone for being awesome\n\`/gift list\`\t\t\t\tList all giftjar totals\n\`/gift help\`\t\t\t\tDisplay this help message`});
 		} else if (msg.text === 'list') {
 			let attributes = [ 'id', 'giftjar' ];
 			db.scan(attributes).then( (res) => {
