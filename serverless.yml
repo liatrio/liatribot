@@ -54,7 +54,7 @@ custom:
   # Client Secret - quotes required
   slack_client_secret: ${env:SLACK_CLIENT_SECRET}
 
-  darksky_secret: ${env.DARKSKY_SECRET}
+  darksky_secret: ${env:DARKSKY_SECRET}
   
 
 provider:
