@@ -82,7 +82,8 @@ slack.on('/weather', (msg, bot) => {
 						  bot.replyPrivate({text: `${errorMessage}`});
 							console.log(errorMessage);
 						} else {
-							bot.replyPrivate({text: `It's currently ${weatherResults.temperature}. It feels like ${weatherResults.apparentTemperature}.`});
+						  bot.reply({text: `${msg.user_name} requested the weather for ${msg.text}... :mostly_sunny:`});  
+							bot.reply({text: `It's currently ${weatherResults.temperature}. It feels like ${weatherResults.apparentTemperature}.`});
 							//console.log(JSON.stringify(weatherResults, undefined, 2));
 						}
 					});
