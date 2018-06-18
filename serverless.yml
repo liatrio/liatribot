@@ -53,6 +53,8 @@ custom:
   
   # Client Secret - quotes required
   slack_client_secret: ${env:SLACK_CLIENT_SECRET}
+
+  darksky_secret: ${env.DARKSKY_SECRET}
   
 
 provider:
@@ -77,6 +79,7 @@ provider:
     INSTALL_REDIRECT: ${self:custom.slack_install_redirect}
     VERIFICATION_TOKEN: ${self:custom.slack_verification_token}
     ENABLE_LOGGING: ${self:custom.slack_enable_logging}
+    DARKSKY_SECRET: ${self:custom.darksky_secret}
 
 
 functions:

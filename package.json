@@ -23,6 +23,7 @@
     "url": "https://github.com/johnagan/serverless-slack-app/issues"
   },
   "dependencies": {
+    "request": "^2.87.0",
     "serverless-slack": "^1.0.25"
   }
 }

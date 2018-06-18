@@ -13,6 +13,7 @@ pipeline {
     SLACK_CLIENT_SECRET = credentials('liatribot-slack-client-secret')
     AWS_ACCESS_KEY_ID = credentials('shanem-aws-secret-key-id')
     AWS_SECRET_ACCESS_KEY = credentials('shanem-aws-secret-access-key')
+    DARKSKY_SECRET = credentials('shanem-darksky-secret')
   }
   stages {
     stage('Build') {

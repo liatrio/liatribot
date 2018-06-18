@@ -11,10 +11,86 @@
 
 // Include the serverless-slack bot framework
 const slack = require('serverless-slack');
+const request = require('request');
 const db = require('./db');
+const DARKSKY_SECRET  = process.env.DARKSKY_SECRET;
 
 // The function that AWS Lambda will call
 exports.handler = slack.handler.bind(slack);
+
+let geocodeAddress = (address, callback) => {
+  let encodedAddress = encodeURIComponent(address);
+  request({
+    url: `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}`,
+    json: true
+  }, (error, response, body) => {
+    if (error) {
+      callback('Unable to connect to Google servers.');
+    } else if (body.status === 'ZERO_RESULTS') {
+      callback('Unable to find that address.');
+    } else if (body.status === 'OK') {
+      callback(undefined, {
+        address: body.results[0].formatted_address,
+        latitude: body.results[0].geometry.location.lat,
+        longitude: body.results[0].geometry.location.lng
+      });
+    } else {
+      callback('Unable to fetch results.');
+    }
+  });
+  return encodedAddress;
+};
+
+let getWeather = (lat, lng, callback) => {
+  request({
+    url: `https://api.darksky.net/forecast/${DARKSKY_SECRET}/${lat},${lng}`,
+    json: true
+  }, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      callback(undefined, {
+        temperature: body.currently.temperature,
+        apparentTemperature: body.currently.apparentTemperature
+      });
+    } else {
+      callback('Unable to fetch weather.');
+    }
+  });
+};
+
+slack.on('/weather', (msg, bot) => {
+	if (msg.text === '') {
+		// no msg text, need a subcommand
+		bot.replyPrivate({text:'Please specify an argument. \`/weather help\`'});
+	} else if (msg.text.includes(' ') || msg.text.includes('\n')) {
+		// there was a space so there must be more than one arg
+		bot.replyPrivate({text:'Please specify just one argument. \`/weather help\`'});
+	} else {
+		// If the first character is @, slice it off
+		msg.text = msg.text.toLowerCase();
+
+		if (msg.text === 'help') {
+			bot.replyPrivate({text: `\`/weather <city>\`\t\t\tGet the forecast\n\`/weather help\`\t\t\t\tDisplay this help message`});
+		} else { // msg.text = city
+			geocodeAddress(msg.text, (errorMessage, results) => {
+				if (errorMessage) {
+					console.log(errorMessage);
+				} else {
+					console.log(results.address);
+					//console.log(JSON.stringify(results, undefined, 2));
+					getWeather(results.latitude, results.longitude, (errorMessage, weatherResults) => {
+						if (errorMessage) {
+						  bot.replyPrivate({text: `${errorMessage}`});
+							console.log(errorMessage);
+						} else {
+							bot.replyPrivate({text: `It's currently ${weatherResults.temperature}. It feels like ${weatherResults.apparentTemperature}.`});
+							//console.log(JSON.stringify(weatherResults, undefined, 2));
+						}
+					});
+				}
+			});
+    }
+	}
+});
 
 slack.on('/gift', (msg, bot) => {
 	if (msg.text === '') {
