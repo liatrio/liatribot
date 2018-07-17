@@ -29,7 +29,8 @@ pipeline {
     }
     stage('Deploy') {
       steps {
-        sh 'npm install -g serverless'
+        // latest version breaks env vars that are not strings, revert back
+        sh 'npm install -g serverless@1.27.3'
         sh 'serverless deploy'
       }
     }
