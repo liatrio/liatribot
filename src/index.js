@@ -251,8 +251,6 @@ slack.on('/beerjar', (msg, bot) => {
 slack.on('/cointoss', (msg, bot) => {
   if (msg.text === 'help') {
 		bot.replyPrivate({text: `\`/cointoss\`\t\t\tFlip a coin\n\`/cointoss help\`\t\t\t\tDisplay this help message`});
-	} else if (msg.text !== '') {
-		bot.replyPrivate({text:'Please specify no arguments. \`/cointoss help\`'});
 	} else {
 	  let result = 'heads';
 		if (Math.random() >= 0.5) {
