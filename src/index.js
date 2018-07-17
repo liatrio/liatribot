@@ -259,7 +259,7 @@ slack.on('/cointoss', (msg, bot) => {
 	  bot.reply({text:'Tossing a coin...'});
 		setTimeout( () => {
 		  bot.reply({text:`...${result}!`});
-		}, 2500);
+		}, 1000);
 	}
 });
 
