@@ -93,13 +93,13 @@ slack.on('/weather', (msg, bot) => {
 	}
 });
 
-slack.on('/beerbet', (msg, bot) => {
+/*slack.on('/beerbet', (msg, bot) => {
   if (msg.text === '') {
 		bot.replyPrivate({text:'Please specify an argument. \`/beerbet help\`'});
 	} else {
 	  bot.replyPrivate({ text: ${msg.text} });
 	}
-});
+});*/
 
 slack.on('/gift', (msg, bot) => {
 	if (msg.text === '') {
