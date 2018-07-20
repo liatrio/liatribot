@@ -231,7 +231,7 @@ slack.on('/beercrowler', (msg, bot) => {
 				console.log('err:' + err);
 			});
 		} else if (msg.text === 'help') {
-			bot.replyPrivate({text: `\`/beercrowler <name>\`\t\t\tAdd $1 to a beercrowler\n\`/beercrowler list\`\t\t\t\tList all beerjar totals\n\`/beercrowler help\`\t\t\t\tDisplay this help message`});
+			bot.replyPrivate({text: `\`/beercrowler <name>\`\t\t\tAdd $10 to a beerjar\n\`/beercrowler list\`\t\t\t\tList all beerjar totals\n\`/beercrowler help\`\t\t\t\tDisplay this help message`});
 		} else {
       db.getItem(msg.text).then( (res) => {
         if (Object.keys(res).length === 0) {
