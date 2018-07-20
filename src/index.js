@@ -200,6 +200,64 @@ slack.on('reaction_added', (msg, bot) => {
 	});
 });
 
+slack.on('/beercrowler', (msg, bot) => {
+	if (msg.text === '') {
+		// no msg text, need a subcommand
+		bot.replyPrivate({text:'Please specify an argument. \`/beercrowler help\`'});
+	} else if (msg.text.includes(' ') || msg.text.includes('\n')) {
+		// there was a space so there must be more than one arg
+		bot.replyPrivate({text:'Please specify just one argument. \`/beercrowler help\`'});
+	} else {
+		// If the first character is @, slice it off
+		msg.text = msg.text.toLowerCase();
+		msg.text = (msg.text[0] === '@') ? msg.text.slice(1) : msg.text;
+
+    if (msg.text === 'balance') {
+		} else if (msg.text === 'list') {
+			let attributes = [ 'id', 'beerjar' ];
+			db.scan(attributes).then( (res) => {
+				// Sort by Beerjar totals in descending order
+				// https://www.w3schools.com/jsref/jsref_sort.asp
+				res.Items.sort( (a, b) => b.beerjar - a.beerjar );
+				let text = ":beers: Beerjar Totals :beers:\n";
+				res.Items.slice(0, 10).forEach( (value, index) => {
+					index += 1
+					text += `(${index})\t$${value.beerjar}\t${value.id}\n`
+				});
+				bot.reply({text});
+				//bot.reply({text: JSON.stringify(res, null, 2)});
+			}).catch( (err) => {
+        bot.reply({err});
+				console.log('err:' + err);
+			});
+		} else if (msg.text === 'help') {
+			bot.replyPrivate({text: `\`/beercrowler <name>\`\t\t\tAdd $1 to a beercrowler\n\`/beercrowler list\`\t\t\t\tList all beerjar totals\n\`/beercrowler help\`\t\t\t\tDisplay this help message`});
+		} else {
+      db.getItem(msg.text).then( (res) => {
+        if (Object.keys(res).length === 0) {
+          bot.replyPrivate({text: `There is no user by the name of ${msg.text}. \`/adduser help\``});
+        } else {
+          let newTotal = res.Item.beerjar + 10;
+          let data = {
+            id: msg.text,
+            beerjar: newTotal
+          }
+          db.save(data).then( (res) => {
+            bot.reply({text: `:beer: $10 was added to ${msg.text}'s beerjar by ${msg.user_name}! :beer:`});
+            console.log('res:' + res);
+          }).catch( (err) => {
+            console.log('err:' + err);
+          });
+        }
+      }).catch( (err) => {
+        console.log('err:' + err);
+      });
+    }
+	}
+});
+
+
+
 slack.on('/beerjar', (msg, bot) => {
 	if (msg.text === '') {
 		// no msg text, need a subcommand
